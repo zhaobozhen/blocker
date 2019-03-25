@@ -44,12 +44,12 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.annotation:annotation:1.0.1'
-    implementation 'androidx.preference:preference:1.1.0-alpha02'
+    implementation 'androidx.annotation:annotation:1.0.2'
+    implementation 'androidx.preference:preference:1.1.0-alpha04'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation "android.arch.work:work-runtime-ktx:1.0.0-beta02"
+    implementation "android.arch.work:work-runtime-ktx:1.0.0"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation "com.mikepenz:materialdrawer:6.1.1"
     // rxpermission
