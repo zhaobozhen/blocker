@@ -26,6 +26,16 @@
         android:id="@+id/menu_enable_all"
         android:title="@string/enable_all"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_enable_search_all"
+        android:title="@string/enable_search_all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_disable_search_all"
+        android:title="@string/disable_search_all"
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_export_rule"
         android:title="@string/export_rule"

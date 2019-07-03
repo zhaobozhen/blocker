@@ -40,6 +40,7 @@ class ComponentFragment : Fragment(), ComponentContract.View, ComponentContract.
     private lateinit var packageName: String
     private lateinit var type: EComponentType
     private val logger = XLog.tag("ComponentFragment").build()
+    private var isInSearch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,10 +106,21 @@ class ComponentFragment : Fragment(), ComponentContract.View, ComponentContract.
         })
         searchView.setOnSearchClickListener {
             setItemsVisibility(menu, searchItem, false)
+            isInSearch = true
         }
         searchView.setOnCloseListener {
             setItemsVisibility(menu, searchItem, true)
+            isInSearch = false
             false
+        }
+    }
+
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        if (!isInSearch) {
+            menu.removeItem(R.id.menu_enable_search_all)
+            menu.removeItem(R.id.menu_disable_search_all)
         }
     }
 
@@ -121,6 +133,8 @@ class ComponentFragment : Fragment(), ComponentContract.View, ComponentContract.
                 Toast.makeText(context, R.string.enabling_hint, Toast.LENGTH_SHORT).show()
                 presenter.enableAllComponents(packageName, type)
             }
+            R.id.menu_enable_search_all -> {}
+            R.id.menu_disable_search_all -> {}
             R.id.menu_export_rule -> presenter.exportRule(packageName)
             R.id.menu_import_rule -> {
                 presenter.importRule(packageName)
@@ -135,11 +149,9 @@ class ComponentFragment : Fragment(), ComponentContract.View, ComponentContract.
         if (type != EComponentType.ACTIVITY) {
             menu.removeItem(R.id.launch_activity)
         }
-        context?.let {
-            if (PreferenceUtil.getControllerType(it) == EControllerMethod.IFW) {
-                menu.removeItem(R.id.block_by_ifw)
-                menu.removeItem(R.id.enable_by_ifw)
-            }
+        if (PreferenceUtil.getControllerType(requireContext()) == EControllerMethod.IFW) {
+            menu.removeItem(R.id.block_by_ifw)
+            menu.removeItem(R.id.enable_by_ifw)
         }
     }
 

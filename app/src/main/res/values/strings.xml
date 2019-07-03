@@ -145,4 +145,6 @@
     <string name="copy_full_name">Copy Full Name</string>
     <string name="component_name">Component Name</string>
     <string name="copied">Copied</string>
+    <string name="enable_search_all">Enable All Search Result(s)</string>
+    <string name="disable_search_all">Disable All Search Result(s)</string>
 </resources>
