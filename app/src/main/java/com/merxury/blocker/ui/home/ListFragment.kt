@@ -10,7 +10,6 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.merxury.blocker.R
 import com.merxury.blocker.baseview.ContextMenuRecyclerView
@@ -114,11 +113,6 @@ class ListFragment : Fragment(), HomeContract.View {
             registerForContextMenu(this)
         }
         appListSwipeLayout?.apply {
-            setColorSchemeColors(
-                    ContextCompat.getColor(context, com.merxury.blocker.R.color.colorPrimary),
-                    ContextCompat.getColor(context, com.merxury.blocker.R.color.colorAccent),
-                    ContextCompat.getColor(context, com.merxury.blocker.R.color.colorPrimaryDark)
-            )
             setOnRefreshListener { presenter.loadApplicationList(context, isSystem) }
         }
         presenter.loadApplicationList(context!!, isSystem)
@@ -316,9 +310,9 @@ class ListFragment : Fragment(), HomeContract.View {
                     itemView.isLongClickable = true
                     itemView.setOnClickListener { listener.onAppClick(application) }
                     if (!application.isEnabled) {
-                        itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_300))
+                        itemView.setBackgroundColor(Color.GRAY)
                     } else if (application.isBlocked) {
-                        itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.md_red_50))
+                        itemView.setBackgroundColor(Color.RED)
                     } else {
                         itemView.setBackgroundColor(Color.WHITE)
                     }
