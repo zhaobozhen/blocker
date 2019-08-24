@@ -89,13 +89,7 @@ class ComponentActivity : AppCompatActivity(), IActivityView {
     }
 
     override fun getBackgroundColor(tabPosition: Int): Int {
-        return when (tabPosition) {
-            0 -> ContextCompat.getColor(this, R.color.google_blue)
-            1 -> ContextCompat.getColor(this, R.color.google_green)
-            2 -> ContextCompat.getColor(this, R.color.google_red)
-            3 -> ContextCompat.getColor(this, R.color.md_yellow_800)
-            else -> ContextCompat.getColor(this, R.color.md_grey_700)
-        }
+        return ContextCompat.getColor(this, R.color.md_grey_700)
     }
 
     private fun setupViewPager() {

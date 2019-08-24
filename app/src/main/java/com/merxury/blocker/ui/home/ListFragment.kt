@@ -26,7 +26,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 
-class ApplicationListFragment : Fragment(), HomeContract.View {
+class ListFragment : Fragment(), HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
     private var isSystem: Boolean = false
     private var itemListener: AppItemListener = object : AppItemListener {
@@ -93,7 +93,7 @@ class ApplicationListFragment : Fragment(), HomeContract.View {
         argument?.run {
             isSystem = this.getBoolean(IS_SYSTEM)
         }
-        presenter = HomePresenter(this)
+        presenter = AppListPresenter(this)
         presenter.start(context!!)
         listAdapter = AppListRecyclerViewAdapter(itemListener)
     }
@@ -242,8 +242,8 @@ class ApplicationListFragment : Fragment(), HomeContract.View {
 
     companion object {
         const val IS_SYSTEM: String = "IS_SYSTEM"
-        fun newInstance(isSystem: Boolean): androidx.fragment.app.Fragment {
-            val fragment = ApplicationListFragment()
+        fun newInstance(isSystem: Boolean): Fragment {
+            val fragment = ListFragment()
             val bundle = Bundle()
             bundle.putBoolean(IS_SYSTEM, isSystem)
             fragment.arguments = bundle
@@ -252,7 +252,7 @@ class ApplicationListFragment : Fragment(), HomeContract.View {
 
     }
 
-    inner class AppListRecyclerViewAdapter(private val listener: ApplicationListFragment.AppItemListener, private var applications: MutableList<Application> = mutableListOf()) : androidx.recyclerview.widget.RecyclerView.Adapter<AppListRecyclerViewAdapter.ViewHolder>() {
+    inner class AppListRecyclerViewAdapter(private val listener: AppItemListener, private var applications: MutableList<Application> = mutableListOf()) : androidx.recyclerview.widget.RecyclerView.Adapter<AppListRecyclerViewAdapter.ViewHolder>() {
 
         private lateinit var pm: PackageManager
         private var listCopy = ArrayList<Application>()

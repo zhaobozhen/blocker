@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#212121</color>
+    <color name="accent">#FC9105</color>
+    <color name="sidebar_icon_not_selected">#9A9A9A</color>
+    <color name="window_background">#424242</color>
+</resources>

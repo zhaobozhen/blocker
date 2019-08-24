@@ -49,8 +49,8 @@ class HomeActivity : AppCompatActivity(), IActivityView {
 
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = FragmentAdapter(supportFragmentManager)
-        adapter.addFragment(ApplicationListFragment.newInstance(false), getString(R.string.third_party_app_tab_text))
-        adapter.addFragment(ApplicationListFragment.newInstance(true), getString(R.string.system_app_tab_text))
+        adapter.addFragment(HomeFragment(), getString(R.string.third_party_app_tab_text))
+        adapter.addFragment(ListFragment.newInstance(true), getString(R.string.system_app_tab_text))
         viewPager.adapter = adapter
     }
 

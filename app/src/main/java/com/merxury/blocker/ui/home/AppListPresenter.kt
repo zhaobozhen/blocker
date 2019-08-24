@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class HomePresenter(private var homeView: HomeContract.View?) : HomeContract.Presenter {
+class AppListPresenter(private var homeView: HomeContract.View?) : HomeContract.Presenter {
     private var context: Context? = null
     private val logger = XLog.tag(this.javaClass.simpleName).build()
     private val exceptionHandler = { e: Throwable ->
