@@ -146,7 +146,8 @@ class ComponentActivity : AppCompatActivity() {
             CODENAME.put(25, "Android 7.1")
             CODENAME.put(26, "Android 8.0")
             CODENAME.put(27, "Android 8.1")
-            CODENAME.put(28, "Android P")
+            CODENAME.put(28, "Android 9")
+            CODENAME.put(29, "Android 10")
             // Reference : https://source.android.com/setup/start/build-numbers
         }
     }
