@@ -6,4 +6,5 @@
     <color name="accent">#FFFFFF</color>
     <color name="sidebar_icon_not_selected">#005176</color>
     <color name="window_background">#FAFAFA</color>
+    <color name="search_background">#EEEEEE</color>
 </resources>

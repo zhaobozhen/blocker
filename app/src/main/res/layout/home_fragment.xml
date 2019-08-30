@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.merxury.blocker.baseview.StatusBarSizeView
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -16,22 +13,33 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/window_background">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:defaultQueryHint="@string/search"
-                app:iconifiedByDefault="false" />
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="@color/search_background"
+                tools:targetApi="lollipop">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:autofillHints="@string/search"
+                    android:background="@null"
+                    android:hint="@string/search"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </androidx.cardview.widget.CardView>
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:background="@color/window_background" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -40,4 +48,5 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@id/tabs"
         app:layout_anchorGravity="bottom"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>
