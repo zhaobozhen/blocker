@@ -3,13 +3,13 @@ package com.merxury.blocker.ui.home
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.merxury.blocker.R
 import com.merxury.blocker.baseview.ContextMenuRecyclerView
@@ -109,7 +109,6 @@ class ListFragment : Fragment(), HomeContract.View {
             this.layoutManager = layoutManager
             adapter = listAdapter
             itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
-            addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(context, layoutManager.orientation))
             registerForContextMenu(this)
         }
         appListSwipeLayout?.apply {
@@ -306,20 +305,22 @@ class ListFragment : Fragment(), HomeContract.View {
         inner class ViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
             fun bindApplication(application: Application) {
                 view?.apply {
-                    itemView.app_name.text = application.label
+                    itemView.appName.text = application.label
+                    itemView.packageName.text = application.packageName
                     itemView.isLongClickable = true
                     itemView.setOnClickListener { listener.onAppClick(application) }
-                    if (!application.isEnabled) {
-                        itemView.setBackgroundColor(Color.GRAY)
+                    val backgroundColor = if (!application.isEnabled) {
+                        R.color.disabled_app_background
                     } else if (application.isBlocked) {
-                        itemView.setBackgroundColor(Color.RED)
+                        R.color.blocked_app_background
                     } else {
-                        itemView.setBackgroundColor(Color.WHITE)
+                        R.color.window_background
                     }
+                    itemView.setBackgroundColor(ContextCompat.getColor(requireContext(), backgroundColor))
                     doAsync {
                         val icon = application.getApplicationIcon(pm)
                         uiThread {
-                            itemView.app_icon.setImageDrawable(icon)
+                            itemView.appIcon.setImageDrawable(icon)
                         }
                     }
                 }

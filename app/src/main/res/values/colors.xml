@@ -7,4 +7,7 @@
     <color name="sidebar_icon_not_selected">#005176</color>
     <color name="window_background">#FAFAFA</color>
     <color name="search_background">#EEEEEE</color>
+    <color name="disabled_app_background">#CFCFCF</color>
+    <color name="blocked_app_background">#FFCCCB</color>
+    <color name="secondary_text_color">#757575</color>
 </resources>
