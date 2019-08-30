@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         supportFragmentManager.beginTransaction()
-                .replace(R.id.root, HomeFragment())
+                .replace(R.id.fragmentContainer, HomeFragment())
                 .commit()
     }
 

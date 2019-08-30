@@ -8,9 +8,11 @@ import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.merxury.blocker.R
 import com.merxury.blocker.baseview.ContextMenuRecyclerView
 import com.merxury.blocker.ui.Constants
@@ -85,12 +87,11 @@ class ListFragment : Fragment(), HomeContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val argument = arguments
-        argument?.run {
-            isSystem = this.getBoolean(IS_SYSTEM)
+        arguments?.let {
+            isSystem = it.getBoolean(IS_SYSTEM)
         }
         presenter = AppListPresenter(this)
-        presenter.start(context!!)
+        presenter.start(requireContext())
         listAdapter = AppListRecyclerViewAdapter(itemListener)
     }
 
@@ -102,16 +103,17 @@ class ListFragment : Fragment(), HomeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         appListFragmentRecyclerView?.apply {
-            val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            val layoutManager = LinearLayoutManager(context)
             this.layoutManager = layoutManager
             adapter = listAdapter
-            itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+            itemAnimator = DefaultItemAnimator()
             registerForContextMenu(this)
         }
         appListSwipeLayout?.apply {
             setOnRefreshListener { presenter.loadApplicationList(context, isSystem) }
+            setColorSchemeResources(R.color.primary)
         }
-        presenter.loadApplicationList(context!!, isSystem)
+        presenter.loadApplicationList(requireContext(), isSystem)
     }
 
     override fun onDestroy() {
@@ -122,27 +124,6 @@ class ListFragment : Fragment(), HomeContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
-        val searchItem = menu.findItem(R.id.menu_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String): Boolean {
-                searchForApplication(newText)
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String): Boolean {
-                searchForApplication(query)
-                return true
-            }
-        })
-        searchView.setOnSearchClickListener {
-            setItemsVisibility(menu, searchItem, false)
-        }
-        searchView.setOnCloseListener {
-            setItemsVisibility(menu, searchItem, true)
-            false
-        }
-
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -172,25 +153,21 @@ class ListFragment : Fragment(), HomeContract.View {
     }
 
     override fun showAlert(alertMessage: Int, confirmAction: () -> Unit) {
-        context?.let {
-            AlertDialog.Builder(it)
-                    .setTitle(R.string.alert)
-                    .setMessage(alertMessage)
-                    .setCancelable(true)
-                    .setNegativeButton(R.string.cancel) { dialog: DialogInterface?, _: Int -> dialog?.dismiss() }
-                    .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int -> confirmAction() }
-                    .show()
-        }
+        AlertDialog.Builder(requireContext())
+                .setTitle(R.string.alert)
+                .setMessage(alertMessage)
+                .setCancelable(true)
+                .setNegativeButton(R.string.cancel) { dialog: DialogInterface?, _: Int -> dialog?.dismiss() }
+                .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int -> confirmAction() }
+                .show()
     }
 
     override fun showError(errorMessage: Int) {
-        context?.let {
-            AlertDialog.Builder(it)
-                    .setTitle(R.string.oops)
-                    .setMessage(errorMessage)
-                    .setPositiveButton(R.string.close) { dialog: DialogInterface, _: Int -> dialog.dismiss() }
-                    .show()
-        }
+        AlertDialog.Builder(requireContext())
+                .setTitle(R.string.oops)
+                .setMessage(errorMessage)
+                .setPositiveButton(R.string.close) { dialog: DialogInterface, _: Int -> dialog.dismiss() }
+                .show()
     }
 
     override fun showToastMessage(message: String?, length: Int) {
@@ -218,14 +195,6 @@ class ListFragment : Fragment(), HomeContract.View {
         return true
     }
 
-    private fun setItemsVisibility(menu: Menu, exception: MenuItem, visible: Boolean) {
-        for (i in 0 until menu.size()) {
-            val item = menu.getItem(i)
-            if (item !== exception)
-                item.isVisible = visible
-        }
-    }
-
     interface AppItemListener {
         fun onAppClick(application: Application)
     }
@@ -242,7 +211,7 @@ class ListFragment : Fragment(), HomeContract.View {
 
     }
 
-    inner class AppListRecyclerViewAdapter(private val listener: AppItemListener, private var applications: MutableList<Application> = mutableListOf()) : androidx.recyclerview.widget.RecyclerView.Adapter<AppListRecyclerViewAdapter.ViewHolder>() {
+    inner class AppListRecyclerViewAdapter(private val listener: AppItemListener, private var applications: MutableList<Application> = mutableListOf()) : RecyclerView.Adapter<AppListRecyclerViewAdapter.ViewHolder>() {
 
         private lateinit var pm: PackageManager
         private var listCopy = ArrayList<Application>()
@@ -299,7 +268,7 @@ class ListFragment : Fragment(), HomeContract.View {
             notifyDataSetChanged()
         }
 
-        inner class ViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             fun bindApplication(application: Application) {
                 view?.apply {
                     itemView.appName.text = application.label
