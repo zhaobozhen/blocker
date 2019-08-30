@@ -21,20 +21,17 @@ import com.merxury.libkit.entity.ETrimMemoryLevel
 import com.merxury.libkit.utils.ApplicationUtil
 import kotlinx.android.synthetic.main.app_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_app_list.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
-
+import kotlinx.coroutines.*
 
 class ListFragment : Fragment(), HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
     private var isSystem: Boolean = false
+    private val imageLoadJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + imageLoadJob)
+
     private var itemListener: AppItemListener = object : AppItemListener {
         override fun onAppClick(application: Application) {
             presenter.openApplicationDetails(application)
-        }
-
-        override fun onAppLongClick(application: Application) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }
 
@@ -119,6 +116,7 @@ class ListFragment : Fragment(), HomeContract.View {
 
     override fun onDestroy() {
         presenter.destroy()
+        imageLoadJob.cancel()
         super.onDestroy()
     }
 
@@ -230,7 +228,6 @@ class ListFragment : Fragment(), HomeContract.View {
 
     interface AppItemListener {
         fun onAppClick(application: Application)
-        fun onAppLongClick(application: Application)
     }
 
     companion object {
@@ -317,11 +314,11 @@ class ListFragment : Fragment(), HomeContract.View {
                         R.color.window_background
                     }
                     itemView.setBackgroundColor(ContextCompat.getColor(requireContext(), backgroundColor))
-                    doAsync {
-                        val icon = application.getApplicationIcon(pm)
-                        uiThread {
-                            itemView.appIcon.setImageDrawable(icon)
+                    uiScope.launch {
+                        val icon = withContext(Dispatchers.IO) {
+                            application.getApplicationIcon(pm)
                         }
+                        itemView.appIcon.setImageDrawable(icon)
                     }
                 }
             }
