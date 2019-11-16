@@ -31,7 +31,7 @@ class HomeFragment: Fragment() {
         viewpager?.apply {
             adapter = AppListPageAdapter(requireFragmentManager(), lifecycle)
             offscreenPageLimit = 1
-            TabLayoutMediator(tabs, viewpager, TabLayoutMediator.OnConfigureTabCallback { tab, position ->
+            TabLayoutMediator(tabs, viewpager, TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 if (position == 0) {
                     tab.setText(R.string.third_party_app_tab_text)
                 } else {
