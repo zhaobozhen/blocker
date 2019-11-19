@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
         if (logFile.exists()) {
             val logUri = FileProvider.getUriForFile(
                     this,
-                    "com.merxury.blocker.provider", //(use your app signature + ".provider" )
-                    logFile);
+                    "com.merxury.blocker.provider",
+                    logFile)
             emailIntent.putExtra(Intent.EXTRA_STREAM, logUri)
         }
         startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)))
