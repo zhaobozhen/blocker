@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.merxury.blocker.BlockerApplication
 import com.merxury.blocker.R
+import com.merxury.blocker.ui.settings.SettingsActivity
+import kotlinx.android.synthetic.main.activity_home.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, HomeFragment())
                 .commit()
+        initSidebarButtons()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -23,6 +26,12 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun initSidebarButtons() {
+        settingsSectionIndicator?.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 
     //TODO reserved code
